@@ -1,14 +1,48 @@
 require 'rubygems'
 require "sinatra/base"
+require "sinatra/config_file"
+require 'sinatra/contrib/all'
+require "sinatra/activerecord"
+require "./models/foo"
 
 class App < Sinatra::Base
+  configure :development do
+    register Sinatra::Reloader
+  end
+
+  register Sinatra::ConfigFile
+  config_file 'config/environments.yml'
+
+  register Sinatra::ActiveRecordExtension
+
+  set :root, File.dirname(__FILE__)
 
   set :title, 'Rui Space!'
 
   get '/' do
     settings.title
   end
-  # $0 is the executed file
-  # __FILE__ is the current file
-  #run! if __FILE__ == $0
+
+  get '/add/:name' do
+    foo = Foo.new
+    foo.name = params[:name]
+    foo.save
+    "#{params[:name]} has been successfully added!"
+  end
+
+  get '/foos/rm/:name' do
+    foos = Foo.find_by name: params[:name]
+    foos.destroy
+    redirect '/foos'
+  end
+
+  get '/foos' do
+    all = Foo.all
+    result = '<ul>'
+    all.each do |foo|
+      result << "<li>#{foo.name}</li>"
+    end
+    result << '</ul>'
+    result
+  end
 end
