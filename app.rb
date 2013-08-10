@@ -14,7 +14,7 @@ class App < Sinatra::Base
   register Sinatra::ActiveRecordExtension
 
   configure :production do
-    ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
+    ActiveRecord::Base.establish_connection(ENV['HEROKU_POSTGRESQL_NAVY_URL'])
   end
 
   register Sinatra::ConfigFile
