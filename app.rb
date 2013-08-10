@@ -1,7 +1,7 @@
 require 'rubygems'
 require "sinatra/base"
 
-class MyApp < Sinatra::Base
+class App < Sinatra::Base
 
   set :title, 'Rui Space!'
 
@@ -10,5 +10,5 @@ class MyApp < Sinatra::Base
   end
   # $0 is the executed file
   # __FILE__ is the current file
-  run! if __FILE__ == $0
+  #run! if __FILE__ == $0
 end
