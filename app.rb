@@ -10,10 +10,16 @@ class App < Sinatra::Base
     register Sinatra::Reloader
   end
 
+  register Sinatra::ActiveRecordExtension
+  
+  configure :production do
+    ActiveRecord::Base.establish_connection(ENV["HEROKU_POSTGRESQL_NAVY_URL"])
+  end
+
   register Sinatra::ConfigFile
   config_file 'config/environments.yml'
 
-  register Sinatra::ActiveRecordExtension
+
 
   set :root, File.dirname(__FILE__)
 
