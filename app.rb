@@ -2,6 +2,7 @@ require 'rubygems'
 require "sinatra/base"
 require "sinatra/config_file"
 require 'sinatra/contrib/all'
+require 'active_record'
 require "sinatra/activerecord"
 require "./models/foo"
 
@@ -11,9 +12,9 @@ class App < Sinatra::Base
   end
 
   register Sinatra::ActiveRecordExtension
-  
+
   configure :production do
-    ActiveRecord::Base.establish_connection(ENV["HEROKU_POSTGRESQL_NAVY_URL"])
+    ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
   end
 
   register Sinatra::ConfigFile
